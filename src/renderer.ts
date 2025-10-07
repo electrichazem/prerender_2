@@ -13,21 +13,28 @@ export class Renderer {
   constructor(private readonly config: ServiceConfig) {}
 
   private async getBrowser(): Promise<Browser> {
-    if (!this.browserPromise) {
-      this.browserPromise = puppeteer.launch({
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--no-zygote',
-          '--single-process'
-        ],
-        headless: true
-      });
-    }
-    return this.browserPromise;
+  if (!this.browserPromise) {
+    console.log('🚀 Launching browser...');
+    this.browserPromise = puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-zygote',
+        '--single-process'
+      ],
+      headless: true,
+      // Remove this line to use Puppeteer's built-in Chromium
+      // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
+    }).then(browser => {
+      console.log('✅ Browser launched successfully');
+      return browser;
+    });
   }
+  return this.browserPromise;
+}
+
 
   async render(fullUrl: string): Promise<RenderResult> {
     const browser = await this.getBrowser();
@@ -119,6 +126,7 @@ export class Renderer {
     return out;
   }
 }
+
 
 
 
