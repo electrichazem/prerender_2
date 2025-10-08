@@ -1,14 +1,24 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
-from renderer import Renderer
+from simple_renderer import SimpleRenderer  # CHANGED THIS LINE
 from config import Config
 
 app = FastAPI(title="Prerender Service")
 
+# Add CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Load config
 config = Config()
-renderer = Renderer(config)
+renderer = SimpleRenderer(config)  # CHANGED THIS LINE
 
 @app.get("/")
 async def root():
