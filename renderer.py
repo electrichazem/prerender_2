@@ -112,7 +112,7 @@ class Renderer:
         
         print("🔧 Fixed asset URLs to point to actual domain")
         return html
-        async def close(self):
+    async def close(self):
             if self.browser:
                 await self.browser.close()
             if self.playwright:
