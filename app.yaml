@@ -5,18 +5,16 @@ services:
     github:
       repo: yourusername/prerender-service
       branch: main
-    run_command: npm start
-    build_command: npm run build
-    environment_slug: node-js
+    run_command: python app.py
+    build_command: |
+      pip install -r requirements.txt
+      playwright install chromium
+    environment_slug: python
     instance_count: 1
     instance_size_slug: basic-xs
-    http_port: 3000
-    routes:
-      - path: /
+    http_port: 8000
     envs:
       - key: BASE_ORIGIN
-        value: https://your-actual-website.com
-      - key: NODE_ENV
-        value: production
-      - key: PUPPETEER_EXECUTABLE_PATH
-        value: /usr/bin/chromium
+        value: https://www.puzzle-technology.com
+      - key: PORT
+        value: "8000"
